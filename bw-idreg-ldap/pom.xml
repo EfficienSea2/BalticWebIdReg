@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>net.e2.bw.idreg</groupId>
+        <artifactId>bw-idreg-parent</artifactId>
+        <version>0.1-SNAPSHOT</version>
+    </parent>
+
+    <packaging>jar</packaging>
+    <artifactId>bw-idreg-ldap</artifactId>
+    <name>BalticWeb LDAP Server</name>
+
+    <dependencies>
+
+        <dependency>
+            <groupId>com.beust</groupId>
+            <artifactId>jcommander</artifactId>
+            <version>1.30</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>1.7.7</version>
+        </dependency>
+
+        <!-- LDAP support -->
+        <dependency>
+            <groupId>org.apache.directory.server</groupId>
+            <artifactId>apacheds-all</artifactId>
+            <version>1.5.7</version>
+            <exclusions>
+                <!-- shared-ldap-schema module needs to be excluded to avoid multiple schema resources on the classpath -->
+                <exclusion>
+                    <groupId>org.apache.directory.shared</groupId>
+                    <artifactId>shared-ldap-schema</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>1.7</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                        <configuration>
+                            <transformers>
+                                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                                    <mainClass>net.e2.bw.idreg.ldap.Main</mainClass>
+                                </transformer>
+                            </transformers>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>

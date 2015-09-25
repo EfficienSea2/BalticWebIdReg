@@ -1,0 +1,67 @@
+
+# dn: dc=balticweb,dc=net
+# objectclass: top
+# objectclass: domain
+# dc: balticweb
+
+dn: ou=people,dc=balticweb,dc=net
+objectclass: top
+objectclass: organizationalUnit
+ou: people
+
+dn: ou=groups,dc=balticweb,dc=net
+objectclass: top
+objectclass: organizationalUnit
+ou: groups
+
+dn: ou=services,dc=balticweb,dc=net
+objectclass: top
+objectclass: organizationalUnit
+ou: MMS Services
+
+dn: ou=vessels,dc=balticweb,dc=net
+objectclass: top
+objectclass: organizationalUnit
+ou: vessels
+
+dn: uid=peder,ou=people,dc=balticweb,dc=net
+objectclass: top
+objectclass: organizationalPerson
+objectclass: inetOrgPerson
+uid: peder
+cn: Peder Pedersen
+givenName: Peder
+sn: Pedersen
+mail: peder@carolus.dk
+userpassword:: e1NTSEF9QTM3TkF4K0l1Z25UZS8vTHJPbWFOczdZeGVNSk4xeVQ=
+ou: people
+
+dn: uid=ged,ou=people,dc=balticweb,dc=net
+objectclass: top
+objectclass: organizationalPerson
+objectclass: inetOrgPerson
+uid: ged
+cn: Ged Gedson
+givenName: ged
+sn: Gedson
+mail: ged@gedson.ged
+userpassword: ged
+ou: people
+
+dn: cn=users,ou=groups,dc=balticweb,dc=net
+objectClass: top
+objectClass: groupOfUniqueNames
+cn: users
+uniqueMember: uid=peder,ou=people,dc=balticweb,dc=net
+uniqueMember: uid=ged,ou=people,dc=balticweb,dc=net
+
+dn: cn=Hamlet,ou=vessels,dc=balticweb,dc=net
+objectclass: top
+objectclass: groupOfNames
+objectclass: vessel
+cn: Hamlet
+mmsi: 219622000
+imo: 9150030
+member: uid=peder,ou=people,dc=balticweb,dc=net
+member: uid=mmsuser,ou=people,dc=balticweb,dc=net
+
