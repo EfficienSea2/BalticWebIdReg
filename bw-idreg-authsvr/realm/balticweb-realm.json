@@ -123,71 +123,7 @@
   "otpPolicyDigits" : 6,
   "otpPolicyLookAheadWindow" : 1,
   "otpPolicyPeriod" : 30,
-  "users" : [ {
-    "id" : "454decdc-be35-4dcf-b916-acb634954ab8",
-    "createdTimestamp" : 1443179528540,
-    "username" : "ged",
-    "enabled" : true,
-    "totp" : false,
-    "emailVerified" : false,
-    "firstName" : "ged",
-    "lastName" : "Gedson",
-    "email" : "ged@gedson.ged",
-    "federationLink" : "6e7a16f7-9537-4da2-8b70-3017806e22b3",
-    "attributes" : {
-      "LDAP_ENTRY_DN" : [ "uid=ged,ou=people,dc=balticweb,dc=net" ],
-      "LDAP_ID" : [ "2657f02a-9e06-4e89-a568-586549718e65" ],
-      "createTimestamp" : [ "20150925110158Z" ]
-    },
-    "credentials" : [ ],
-    "requiredActions" : [ ],
-    "clientRoles" : {
-      "account" : [ "view-profile", "manage-account" ]
-    }
-  }, {
-    "id" : "2f5b1d2d-3a78-4d7f-81ca-33d93360ad9a",
-    "createdTimestamp" : 1443179528529,
-    "username" : "peder",
-    "enabled" : true,
-    "totp" : false,
-    "emailVerified" : false,
-    "firstName" : "Peder",
-    "lastName" : "Pedersen",
-    "email" : "peder@carolus.dk",
-    "federationLink" : "6e7a16f7-9537-4da2-8b70-3017806e22b3",
-    "attributes" : {
-      "LDAP_ENTRY_DN" : [ "uid=peder,ou=people,dc=balticweb,dc=net" ],
-      "LDAP_ID" : [ "9bea9045-b17b-44bd-b994-79c83cda7072" ],
-      "createTimestamp" : [ "20150925110158Z" ]
-    },
-    "credentials" : [ ],
-    "requiredActions" : [ ],
-    "clientRoles" : {
-      "account" : [ "view-profile", "manage-account" ]
-    }
-  }, {
-    "id" : "580c1bcf-4a22-4d32-a07f-2554ca4c034b",
-    "createdTimestamp" : 1443443295816,
-    "username" : "test",
-    "enabled" : true,
-    "totp" : false,
-    "emailVerified" : false,
-    "firstName" : "Test2",
-    "lastName" : "Testson2",
-    "email" : "test@testson2.test",
-    "federationLink" : "6e7a16f7-9537-4da2-8b70-3017806e22b3",
-    "attributes" : {
-      "LDAP_ENTRY_DN" : [ "uid=test,ou=people,dc=balticweb,dc=net" ],
-      "LDAP_ID" : [ "8ff849f4-0323-4b4d-9daf-990ee6d10a98" ],
-      "modifyTimestamp" : [ "20150928122940Z" ],
-      "createTimestamp" : [ "20150928122815Z" ]
-    },
-    "credentials" : [ ],
-    "requiredActions" : [ ],
-    "clientRoles" : {
-      "account" : [ "view-profile", "manage-account" ]
-    }
-  } ],
+  "users" : [ ],
   "clientScopeMappings" : {
     "realm-management" : [ {
       "client" : "security-admin-console",
