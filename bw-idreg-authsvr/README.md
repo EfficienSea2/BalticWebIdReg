@@ -1,5 +1,20 @@
+# BalticWeb ID Registry Server
 
+This project contains the resources needed for installing and configuring a JBoss keycloak server, such
+that it serves as a BalticWeb ID Registry server.
 
+Follow the steps below to install, configure and run the server.
+
+## Prerequisites
+
+* Java 8
+* Maven 3
+* MySQL
+
+## Start LDAP
+
+Make sure that the LDAP server of the bw-idreg-ldap project is running.
+    
 ## Create keycloak DB
 
     mysql -u root -p < create-database.sql
@@ -8,8 +23,8 @@
 
    ./install-keycloak.sh
 
-
-## Run keycloak
+## Run keycloak (in parent directory)
 
     ./keycloak-1.5.0.Final/bin/standalone.sh
+
 

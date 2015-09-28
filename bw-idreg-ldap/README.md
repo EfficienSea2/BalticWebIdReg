@@ -1,18 +1,24 @@
 bw-idreg-ldap
-==========================
+==============
 
-BalticWeb LDAP utilities.
+The BalticWeb ApacheDS LDAP Server is used as the main repository for user-related data.
+
+The project contains an embedded ApacheDS LDAP server along with custom LDAP schemas and sample data.
+
+It also implements the ldapsearch command, in case your computer does not support this out of the box.
+
 
 ## Prerequisites
 
 * Java 8
-* Maven (for building)
+* Maven 3
 
 ## Building ##
 
     mvn clean install
 
 ## Using ldapserver
+
 The ldap server is invoked using the following format:
 
 **java -jar target/bw-idreg-ldap-0.1-SNAPSHOT.jar ldapserver 
@@ -26,7 +32,8 @@ The ldap server is invoked using the following format:
 
 Example:
 
-    java -jar target/bw-idreg-ldap-0.1-SNAPSHOT.jar ldapserver \
+    java -jar target/bw-idreg-ldap-0.1-SNAPSHOT.jar \
+        ldapserver \
         -dir /tmp/ldap
     
 ## Using ldapsearch
@@ -48,5 +55,7 @@ The ldap search command is invoked using the following format:
 
 Example:
 
-    java -jar target/bw-idreg-ldap-0.1-SNAPSHOT.jar ldapsearch "(objectClass=vessel)" member
+    java -jar target/bw-idreg-ldap-0.1-SNAPSHOT.jar \
+        ldapsearch \
+        "(objectClass=vessel)" member
 

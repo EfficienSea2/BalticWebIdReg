@@ -1,12 +1,17 @@
 # BalticWebIdReg
-Mock-up BalticWeb ID Registry
+Mock-up BalticWeb ID Registry. 
+
+The ID Registry project is comprised of the following sub-projects:
+
+* bw-idreg-client: A client library that may be used by applications that wish to integrated with the ID Registry.
+* bw-idreg-ldap: An embedded ApacheDS LDAP server including custom schema and sample data.
+* bw-idreg-authsrv: Scripts to download, configure and run the JBoss Keycloak server.
 
 ## Prerequisites
 
-Java 8
-Maven 3
-MySQL
-
+* Java 8
+* Maven 3
+* MySQL
 
 ## Build The Project
 
@@ -14,7 +19,9 @@ MySQL
 
 ## Start LDAP
 
-    java -jar bw-idreg-ldap/target/bw-idreg-ldap-0.1-SNAPSHOT.jar ldapserver -dir /tmp/ldap
+    java -jar bw-idreg-ldap/target/bw-idreg-ldap-0.1-SNAPSHOT.jar \ 
+        ldapserver \
+        -dir /tmp/ldap
 
 ## Create keycloak DB
 
