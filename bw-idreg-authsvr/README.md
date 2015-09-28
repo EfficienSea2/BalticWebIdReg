@@ -25,6 +25,10 @@ Make sure that the LDAP server of the bw-idreg-ldap project is running.
 
 ## Run keycloak (in parent directory)
 
+    # The first time around, use this command to import a balticweb realm:
+    ./bw-idreg-authsvr/realm/import.sh
+    
+    # Subsequently, start Keycloak normally
     ./keycloak-1.5.0.Final/bin/standalone.sh
 
 

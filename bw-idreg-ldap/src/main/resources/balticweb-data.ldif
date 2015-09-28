@@ -63,5 +63,5 @@ cn: Hamlet
 mmsi: 219622000
 imo: 9150030
 member: uid=peder,ou=people,dc=balticweb,dc=net
-member: uid=mmsuser,ou=people,dc=balticweb,dc=net
+member: uid=ged,ou=people,dc=balticweb,dc=net
 

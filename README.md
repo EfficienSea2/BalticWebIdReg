@@ -33,6 +33,10 @@ The ID Registry project is comprised of the following sub-projects:
 
 ## Run keycloak
 
+    # The first time around, use this command to import a balticweb realm:
+    ./bw-idreg-authsvr/realm/import.sh
+    
+    # Subsequently, start Keycloak normally
     ./keycloak-1.5.0.Final/bin/standalone.sh
 
 
