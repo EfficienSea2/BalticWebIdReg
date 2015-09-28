@@ -23,7 +23,7 @@ You can access the application at http://localhost:9000
 Make sure that src/main/resources/keycloak.json is a valid Keycloak client configuration file. By default, it assumes
 that you are running the Keycloak server configured in the bw-idreg-authsvr project.
 
-
+You can also start the demo client with the VM argument: -Dkeycloak.json=/path/to/keycloak.json
 
 
 
