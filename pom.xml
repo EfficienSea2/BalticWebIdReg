@@ -19,6 +19,7 @@
     <module>bw-idreg-client</module>
     <module>bw-idreg-ldap</module>
     <module>sandbox/bw-idreg-web</module>
+    <module>sandbox/bw-idreg-db2ldif</module>
   </modules>
 
   <build>
