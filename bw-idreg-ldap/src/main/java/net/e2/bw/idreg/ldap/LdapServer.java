@@ -14,7 +14,6 @@
  */
 package net.e2.bw.idreg.ldap;
 
-import com.beust.jcommander.IStringConverter;
 import com.beust.jcommander.JCommander;
 import com.beust.jcommander.Parameter;
 import org.apache.directory.server.constants.ServerDNConstants;
@@ -57,6 +56,12 @@ public class LdapServer extends AbstractLdapCommandLineTool {
 
     @Parameter(names = "-dir", description = "The data directory", converter = FileConverter.class)
     File workDir = null;
+
+    @Parameter(names = "-ks", description = "The path to a keystore", converter = FileConverter.class)
+    File keystore = null;
+
+    @Parameter(names = "-ksp", description = "The keystore password")
+    String keystorePassword = null;
 
     /**
      * Add a new partition to the server
@@ -212,11 +217,19 @@ public class LdapServer extends AbstractLdapCommandLineTool {
 
             // Start an LDAP server
             org.apache.directory.server.ldap.LdapServer server = new org.apache.directory.server.ldap.LdapServer();
-            server.setTransports(new TcpTransport(port));
+            TcpTransport transport = new TcpTransport(port);
+
+            if (keystore != null && keystorePassword != null) {
+                server.setKeystoreFile(keystore.getAbsolutePath());
+                server.setCertificatePassword(keystorePassword);
+                transport.enableSSL(true);
+            }
+            server.setTransports(transport);
+
             server.setDirectoryService(service);
 
             server.start();
-            System.out.println("LDAP started");
+            System.out.println("LDAP started on port " + port);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -232,16 +245,6 @@ public class LdapServer extends AbstractLdapCommandLineTool {
         LdapServer server = new LdapServer();
         new JCommander(server, args);
         server.execute();
-    }
-
-    /**
-     * Converts JCommander argument to a file
-     */
-    public static class FileConverter implements IStringConverter<File> {
-        @Override
-        public File convert(String value) {
-            return new File(value);
-        }
     }
 
 }

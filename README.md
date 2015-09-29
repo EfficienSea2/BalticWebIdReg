@@ -29,7 +29,7 @@ The ID Registry project is comprised of the following sub-projects:
 
 ## Install and configure Keycloak (in parent directory)
 
-   ./bw-idreg-authsvr/install-keycloak.sh
+    ./bw-idreg-authsvr/install-keycloak.sh
 
 ## Run keycloak
 
@@ -39,5 +39,8 @@ The ID Registry project is comprised of the following sub-projects:
     # Subsequently, start Keycloak normally
     ./keycloak-1.5.0.Final/bin/standalone.sh
 
-
-
+## Using LDAPS
+  
+    ./keycloak-1.5.0.Final/bin/standalone.sh \
+        -Djavax.net.ssl.trustStore=bw-idreg-ldap/ldaps/ldap-truststore.jks \
+        -Djavax.net.ssl.trustStorePassword=changeit

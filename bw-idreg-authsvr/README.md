@@ -21,7 +21,7 @@ Make sure that the LDAP server of the bw-idreg-ldap project is running.
 
 ## Install and configure Keycloak (in parent directory)
 
-   ./install-keycloak.sh
+    ./install-keycloak.sh
 
 ## Run keycloak (in parent directory)
 
@@ -31,4 +31,8 @@ Make sure that the LDAP server of the bw-idreg-ldap project is running.
     # Subsequently, start Keycloak normally
     ./keycloak-1.5.0.Final/bin/standalone.sh
 
+# Run keycloak against LDAPS 
 
+    ./keycloak-1.5.0.Final/bin/standalone.sh \
+        -Djavax.net.ssl.trustStore=bw-idreg-ldap/ldaps/ldap-truststore.jks \
+        -Djavax.net.ssl.trustStorePassword=changeit

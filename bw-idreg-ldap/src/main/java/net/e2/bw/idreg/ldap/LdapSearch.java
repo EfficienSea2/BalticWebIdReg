@@ -21,6 +21,7 @@ import javax.naming.Context;
 import javax.naming.NamingEnumeration;
 import javax.naming.NamingException;
 import javax.naming.directory.*;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.Hashtable;
@@ -34,6 +35,12 @@ import java.util.List;
  * <a href="http://linuxcommand.org/man_pages/ldapsearch1.html">ldapsearch command</a>
  */
 public class LdapSearch extends AbstractLdapCommandLineTool {
+
+    @Parameter(names = "-ts", description = "The path to a truststore", converter = FileConverter.class)
+    File truststore = null;
+
+    @Parameter(names = "-tsp", description = "The truststore password")
+    String truststorePassword = null;
 
     @Parameter(names="-h", description = "The host")
     String host = "localhost";
@@ -60,23 +67,25 @@ public class LdapSearch extends AbstractLdapCommandLineTool {
     }
 
     /**
-     * Returns the provider URL
-     * @return the provider URL
-     */
-    public String getProviderURL() {
-        return  "ldap://" + getHostAndPort();
-    }
-
-    /**
      * Returns the LDAP Naming Context environment
      * @return the LDAP Naming Context environment
      */
     protected Hashtable<Object, Object> createEnv() {
 
-        Hashtable<Object, Object> env = new Hashtable<>();
-        env.put(Context.PROVIDER_URL, getProviderURL());
-        env.put(Context.INITIAL_CONTEXT_FACTORY, "com.sun.jndi.ldap.LdapCtxFactory");
+        boolean ssl = (truststore != null && truststorePassword != null);
 
+        Hashtable<Object, Object> env = new Hashtable<>();
+
+        if (ssl) {
+            env.put(Context.PROVIDER_URL, "ldaps://" + getHostAndPort());
+            env.put(Context.SECURITY_PROTOCOL, "ssl");
+            System.setProperty("javax.net.ssl.trustStore", truststore.getAbsolutePath());
+            System.setProperty("javax.net.ssl.trustStorePassword", truststorePassword);
+        } else {
+            env.put(Context.PROVIDER_URL, "ldap://" + getHostAndPort());
+        }
+
+        env.put(Context.INITIAL_CONTEXT_FACTORY, "com.sun.jndi.ldap.LdapCtxFactory");
         env.put(Context.SECURITY_PRINCIPAL, bindDN);
         env.put(Context.SECURITY_CREDENTIALS, password);
         env.put(Context.SECURITY_AUTHENTICATION, "simple");
