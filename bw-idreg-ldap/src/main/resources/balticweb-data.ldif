@@ -24,22 +24,12 @@ objectclass: top
 objectclass: organizationalUnit
 ou: vessels
 
-dn: uid=peder,ou=people,dc=balticweb,dc=net
-objectclass: top
-objectclass: organizationalPerson
-objectclass: inetOrgPerson
-uid: peder
-cn: Peder Pedersen
-givenName: Peder
-sn: Pedersen
-mail: peder@carolus.dk
-userpassword:: e1NTSEF9QTM3TkF4K0l1Z25UZS8vTHJPbWFOczdZeGVNSk4xeVQ=
-ou: people
-
 dn: uid=ged,ou=people,dc=balticweb,dc=net
 objectclass: top
 objectclass: organizationalPerson
 objectclass: inetOrgPerson
+objectClass: maritimeResource
+mrn: urn:mrn:dma:user:ged
 uid: ged
 cn: Ged Gedson
 givenName: ged
@@ -51,17 +41,19 @@ ou: people
 dn: cn=users,ou=groups,dc=balticweb,dc=net
 objectClass: top
 objectClass: groupOfUniqueNames
+objectClass: maritimeResource
+mrn: urn:mrn:dma
 cn: users
-uniqueMember: uid=peder,ou=people,dc=balticweb,dc=net
 uniqueMember: uid=ged,ou=people,dc=balticweb,dc=net
 
 dn: cn=Hamlet,ou=vessels,dc=balticweb,dc=net
 objectclass: top
 objectclass: groupOfNames
 objectclass: vessel
+objectClass: maritimeResource
+mrn: urn:mrn:itu:mmsi:219622000
 cn: Hamlet
 mmsi: 219622000
 imo: 9150030
-member: uid=peder,ou=people,dc=balticweb,dc=net
 member: uid=ged,ou=people,dc=balticweb,dc=net
 

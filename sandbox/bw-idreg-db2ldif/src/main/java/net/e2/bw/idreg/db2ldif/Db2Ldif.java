@@ -122,18 +122,29 @@ public class Db2Ldif {
                 String userFirstName = TeamworkDB.getString(rs, "userFirstName");
                 String userLastName = TeamworkDB.getString(rs, "userLastName");
                 String userEmail = TeamworkDB.getString(rs, "userEmail");
+                String companyName = TeamworkDB.getString(rs, "companyName");
 
+                // Normalize user and company names
+                userName = userName.replace('.', '_');
+                companyName = companyName.toLowerCase().replace('&', '-').replace(' ', '_');
+
+                // Make sure the name is unique
                 if (userNames.containsValue(userName)) {
-                    userName = userId;
+                    int suffix = 2;
+                    while (userNames.containsValue(userName + suffix)) {
+                        suffix++;
+                    }
+                    userName = userName + suffix;
                 }
-                userName = userName.replaceAll("\\.", "_");
                 userNames.put(userId, userName);
 
                 ldif.append("dn: uid=").append(userName).append(",").append(peopleDN).append(NL);
                 ldif.append("objectclass: top").append(NL);
                 ldif.append("objectclass: organizationalPerson").append(NL);
                 ldif.append("objectclass: inetOrgPerson").append(NL);
+                ldif.append("objectclass: maritimeResource").append(NL);
                 ldif.append("ou: people").append(NL);
+                ldif.append("mrn: ").append("urn:mrn:").append(companyName).append(":user:").append(userName).append(NL);
                 ldif.append("uid: ").append(userName).append(NL);
                 ldif.append("cn: ").append(userFirstName).append(" ").append(userLastName).append(NL);
                 ldif.append("givenName: ").append(userFirstName).append(NL);
@@ -179,6 +190,8 @@ public class Db2Ldif {
                 String userId = TeamworkDB.getString(rs, "userId");
                 String companyName = TeamworkDB.getString(rs, "companyName");
 
+                companyName = companyName.replace('&', '-');
+
                 StringBuilder g = groups.get(companyName);
                 if (!groups.containsKey(companyName)) {
                     g = new StringBuilder();
@@ -187,7 +200,9 @@ public class Db2Ldif {
                     g.append("dn: cn=").append(companyName).append(",").append(groupsDN).append(NL);
                     g.append("objectClass: top").append(NL);
                     g.append("objectClass: groupOfUniqueNames").append(NL);
+                    g.append("objectclass: maritimeResource").append(NL);
                     g.append("cn: ").append(companyName).append(NL);
+                    g.append("mrn: ").append("urn:mrn:").append(companyName.toLowerCase().replace(' ', '_')).append(NL);
                 }
 
                 String userName = userNames.get(userId);

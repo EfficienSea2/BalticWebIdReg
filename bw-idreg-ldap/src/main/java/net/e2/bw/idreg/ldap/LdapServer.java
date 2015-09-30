@@ -57,6 +57,9 @@ public class LdapServer extends AbstractLdapCommandLineTool {
     @Parameter(names = "-dir", description = "The data directory", converter = FileConverter.class)
     File workDir = null;
 
+    @Parameter(names = "-f", description = "An LDIF file to import", converter = FileConverter.class)
+    File ldif = null;
+
     @Parameter(names = "-ks", description = "The path to a keystore", converter = FileConverter.class)
     File keystore = null;
 
@@ -213,6 +216,10 @@ public class LdapServer extends AbstractLdapCommandLineTool {
                 loadLdifFromResource(service, "/balticweb-schema.ldif");
                 loadLdifFromResource(service, "/balticweb-data.ldif");
                 System.out.println("BalticWeb schema and sample data loaded");
+            }
+
+            if (ldif != null) {
+                new LdifFileLoader(service.getAdminSession(), ldif.getAbsolutePath()).execute();
             }
 
             // Start an LDAP server
