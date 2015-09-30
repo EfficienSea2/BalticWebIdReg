@@ -144,7 +144,7 @@ public class Db2Ldif {
                 ldif.append("objectclass: inetOrgPerson").append(NL);
                 ldif.append("objectclass: maritimeResource").append(NL);
                 ldif.append("ou: people").append(NL);
-                ldif.append("mrn: ").append("urn:mrn:").append(companyName).append(":user:").append(userName).append(NL);
+                ldif.append("mrn: ").append("urn:mrn:mc:user:").append(companyName).append(":").append(userName).append(NL);
                 ldif.append("uid: ").append(userName).append(NL);
                 ldif.append("cn: ").append(userFirstName).append(" ").append(userLastName).append(NL);
                 ldif.append("givenName: ").append(userFirstName).append(NL);
@@ -202,7 +202,7 @@ public class Db2Ldif {
                     g.append("objectClass: groupOfUniqueNames").append(NL);
                     g.append("objectclass: maritimeResource").append(NL);
                     g.append("cn: ").append(companyName).append(NL);
-                    g.append("mrn: ").append("urn:mrn:").append(companyName.toLowerCase().replace(' ', '_')).append(NL);
+                    g.append("mrn: ").append("urn:mrn:mc:org:").append(companyName.toLowerCase().replace(' ', '_')).append(NL);
                 }
 
                 String userName = userNames.get(userId);
