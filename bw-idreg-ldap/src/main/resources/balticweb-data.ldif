@@ -57,3 +57,15 @@ mmsi: 219622000
 imo: 9150030
 member: uid=ged,ou=people,dc=balticweb,dc=net
 
+dn: cn=idreg-test,ou=services,dc=balticweb,dc=net
+objectclass: top
+objectClass: maritimeResource
+objectClass: maritimeService
+cn: idreg-test
+mrn: urn:mrn:dma:service:idreg-test
+
+dn: cn=admin,cn=idreg-test,ou=services,dc=balticweb,dc=net
+objectclass: top
+objectclass: groupOfNames
+cn: admin
+member: uid=ged,ou=people,dc=balticweb,dc=net
