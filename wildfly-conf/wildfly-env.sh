@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # pushd `dirname $0` > /dev/null
 pushd `dirname ${BASH_SOURCE}` > /dev/null

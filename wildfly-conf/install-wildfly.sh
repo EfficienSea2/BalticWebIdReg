@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 #
 # Installs a wildfly instance and adds a MySQL driver
