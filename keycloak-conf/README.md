@@ -25,7 +25,7 @@ Make sure that the LDAP server of the bw-idreg-ldap project is running. Example:
 
 ### Install Wildfly
     
-    ../wildfly-config/install-wildfly.sh
+    ../wildfly-conf/install-wildfly.sh
     
 ## Configure Keycloak
 
@@ -34,7 +34,7 @@ Make sure that the LDAP server of the bw-idreg-ldap project is running. Example:
 ## Start Wildfly (in parent directory)
 
     # The first time around, use this command to import a balticweb realm:
-    ./bw-idreg-keycloak/realm/import.sh
+    ./keycloak-conf/realm/import.sh
     
     # Subsequently, start Wildfly normally
     ./wildfly-9.0.1.Final/bin/standalone.sh
