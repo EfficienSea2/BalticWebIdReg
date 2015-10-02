@@ -1,0 +1,35 @@
+# Use the Wildfly CLI to update the configuration.
+
+# Start offline server
+embed-server --std-out=echo
+
+# Add data source
+data-source add \
+  --name=KeycloakDS \
+  --jndi-name=java:jboss/datasources/KeycloakDS \
+  --driver-name=mysql \
+  --connection-url=jdbc:mysql://localhost:3306/keycloak \
+  --user-name=keycloak \
+  --password=keycloak \
+  --check-valid-connection-sql="SELECT 1" \
+  --background-validation=true \
+  --background-validation-millis=60000 \
+  --flush-strategy=IdleConnections
+
+# Add infinispan cache-container
+/subsystem=infinispan/cache-container=keycloak:add()
+/subsystem=infinispan/cache-container=keycloak:write-attribute(name=jndi-name, value=infinispan/Keycloak)
+/subsystem=infinispan/cache-container=keycloak/local-cache=realms:add()
+/subsystem=infinispan/cache-container=keycloak/local-cache=users:add()
+/subsystem=infinispan/cache-container=keycloak/local-cache=sessions:add()
+/subsystem=infinispan/cache-container=keycloak/local-cache=loginFailures:add()
+
+# Add keycloak subsystem
+/extension=org.keycloak.keycloak-server-subsystem/:add(module=org.keycloak.keycloak-server-subsystem)
+
+/subsystem=keycloak-server:add(web-context=auth)
+
+# Reload and stop offline server
+reload --admin-only=false
+stop-embedded-server
+
