@@ -16,7 +16,11 @@ SELECT
   u.userAddressState,
   u.countrycode,
   u.userWebsite,
-  c.companyName
+  c.companyName,
+  CASE WHEN u.userImage != ''
+    THEN concat('https://tw-',u.userImageUploadedToServer,'.teamworkpm.net/sites/EfficienSea2/images/users/',u.userImage)
+    ELSE u.userS3ImagePath
+  END as userImage
 from
   users u
   LEFT JOIN companies c ON c.companyId = u.companyId

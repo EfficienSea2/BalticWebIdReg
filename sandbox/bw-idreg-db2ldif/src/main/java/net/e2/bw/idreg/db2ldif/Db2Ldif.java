@@ -17,19 +17,21 @@ package net.e2.bw.idreg.db2ldif;
 
 import com.beust.jcommander.JCommander;
 import com.beust.jcommander.Parameter;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.commons.io.IOUtils;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.*;
+import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Bootstrap class used for converting a Teamwork.com DB to LDIF
@@ -37,6 +39,8 @@ import java.util.Map;
 public class Db2Ldif {
 
     public static final String NL = System.lineSeparator();
+
+    Map<String, Company> companyData = new HashMap<>();
 
     @Parameter(names = "-u", description = "The DB user")
     String dbUser = "e2";
@@ -53,6 +57,9 @@ public class Db2Ldif {
     @Parameter(names = "-groupsDN", description = "The DN for the Groups LDAP entry")
     String groupsDN = "ou=groups,dc=balticweb,dc=net";
 
+    @Parameter(names = "-photos", description = "Whether to include photos or not")
+    boolean includePhotos = false;
+
     @Parameter(names = "-o", description = "The output file")
     String out = null;
 
@@ -62,6 +69,12 @@ public class Db2Ldif {
      */
     public static void main(String[] args) throws Exception {
         Db2Ldif db2ldif = new Db2Ldif();
+
+        // Preload company data from json file
+        ObjectMapper mapper = new ObjectMapper();
+        List<Company> companies = mapper.readValue(Db2Ldif.class.getResource("/companies.json"), new TypeReference<List<Company>>() {});
+        companies.forEach(c -> db2ldif.companyData.put(c.uid, c));
+
         new JCommander(db2ldif, args);
         db2ldif.execute();
     }
@@ -118,15 +131,16 @@ public class Db2Ldif {
             int index = 0;
             while (rs.next()) {
                 String userName = TeamworkDB.getString(rs, "userName");
-                String userId = TeamworkDB.getString(rs, "userId");
+                String entryUUID = TeamworkDB.getString(rs, "userId");
                 String userFirstName = TeamworkDB.getString(rs, "userFirstName");
                 String userLastName = TeamworkDB.getString(rs, "userLastName");
                 String userEmail = TeamworkDB.getString(rs, "userEmail");
-                String companyName = TeamworkDB.getString(rs, "companyName");
+                String companyId = TeamworkDB.getString(rs, "companyName");
+                String userImage = TeamworkDB.getString(rs, "userImage");
 
                 // Normalize user and company names
                 userName = userName.replace('.', '_');
-                companyName = companyName.toLowerCase().replace('&', '-').replace(' ', '_');
+                companyId = companyId(companyId);
 
                 // Make sure the name is unique
                 if (userNames.containsValue(userName)) {
@@ -136,7 +150,7 @@ public class Db2Ldif {
                     }
                     userName = userName + suffix;
                 }
-                userNames.put(userId, userName);
+                userNames.put(entryUUID, userName);
 
                 ldif.append("dn: uid=").append(userName).append(",").append(peopleDN).append(NL);
                 ldif.append("objectclass: top").append(NL);
@@ -144,13 +158,22 @@ public class Db2Ldif {
                 ldif.append("objectclass: inetOrgPerson").append(NL);
                 ldif.append("objectclass: maritimeResource").append(NL);
                 ldif.append("ou: people").append(NL);
-                ldif.append("mrn: ").append("urn:mrn:mc:user:").append(companyName).append(":").append(userName).append(NL);
+                ldif.append("mrn: ").append("urn:mrn:mc:user:").append(companyId).append(":").append(userName).append(NL);
                 ldif.append("uid: ").append(userName).append(NL);
                 ldif.append("cn: ").append(userFirstName).append(" ").append(userLastName).append(NL);
                 ldif.append("givenName: ").append(userFirstName).append(NL);
                 ldif.append("sn: ").append(userLastName).append(NL);
                 ldif.append("mail: ").append(userEmail).append(NL);
                 ldif.append("userpassword:: ").append("e1NTSEF9QTM3TkF4K0l1Z25UZS8vTHJPbWFOczdZeGVNSk4xeVQ=").append(NL);
+                ldif.append("entryUUID: ").append(new UUID(Long.parseLong(entryUUID), 0L).toString()).append(NL);
+
+                if (includePhotos) {
+                    byte[] jpg = fetchJPEG(userImage);
+                    if (jpg != null) {
+                        wrapLine(ldif, "jpegPhoto:: ", Base64.getEncoder().encodeToString(jpg));
+                    }
+                }
+
                 ldif.append(NL);
 
                 index++;
@@ -164,6 +187,45 @@ public class Db2Ldif {
             try { if (stmt != null) stmt.close(); } catch (Exception ex) { }
             try { if (conn != null) conn.close(); } catch (Exception ex) { }
         }
+    }
+
+    /** Utility method used wrapping an LDIF attribute into lines of at most 80 characters */
+    private void wrapLine(StringBuilder ldif, String attr, String value) {
+        int len = 80;
+        String prefix = attr;
+        while (value.length() > 0) {
+            ldif.append(prefix);
+            String v = value.substring(0, Math.min(value.length(), len - prefix.length()));
+            ldif.append(v).append(NL);
+            value = value.substring(v.length());
+            prefix = " ";
+        }
+    }
+
+    /** Utility method used for fetching a photo from a URL */
+    private byte[] fetchJPEG(String url) {
+        if (url != null && url.length() > 0) {
+            try (InputStream in = new URL(url).openStream()) {
+                return fetchPhoto(in, "jpg");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return null;
+    }
+
+    /** Utility method used for fetching a photo from an input stream */
+    private byte[] fetchPhoto(InputStream in, String format) throws IOException {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+
+        // Is the format specified or not
+        if (format == null) {
+            IOUtils.copy(in, baos);
+        } else {
+            BufferedImage img = ImageIO.read(in);
+            ImageIO.write(img, format, baos);
+        }
+        return baos.toByteArray();
     }
 
     /**
@@ -189,20 +251,40 @@ public class Db2Ldif {
             while (rs.next()) {
                 String userId = TeamworkDB.getString(rs, "userId");
                 String companyName = TeamworkDB.getString(rs, "companyName");
+                String entryUUID = TeamworkDB.getString(rs, "companyId");
 
-                companyName = companyName.replace('&', '-');
+                String companyId = companyId(companyName);
 
                 StringBuilder g = groups.get(companyName);
                 if (!groups.containsKey(companyName)) {
                     g = new StringBuilder();
                     groups.put(companyName, g);
 
+                    Company company = companyData.get(companyId);
+
                     g.append("dn: cn=").append(companyName).append(",").append(groupsDN).append(NL);
                     g.append("objectClass: top").append(NL);
                     g.append("objectClass: groupOfUniqueNames").append(NL);
                     g.append("objectclass: maritimeResource").append(NL);
+                    g.append("objectclass: maritimeOrganization").append(NL);
                     g.append("cn: ").append(companyName).append(NL);
-                    g.append("mrn: ").append("urn:mrn:mc:org:").append(companyName.toLowerCase().replace(' ', '_')).append(NL);
+                    g.append("uid: ").append(companyId).append(NL);
+                    g.append("mrn: ").append("urn:mrn:mc:org:").append(companyId.toLowerCase().replace(' ', '_')).append(NL);
+                    g.append("entryUUID: ").append(new UUID(Long.parseLong(entryUUID), 0L).toString()).append(NL);
+
+                    if (company != null) {
+                        if (company.country.length() == 2) {
+                            g.append("c: ").append(company.country).append(NL);
+                        }
+                        g.append("labeledURI: ").append(company.www).append(NL);
+                        g.append("description: ").append(company.description).append(NL);
+                        if (includePhotos && company.logo != null) {
+                            byte[] img = fetchPhoto(getClass().getResourceAsStream(company.logo), null);
+                            if (img != null) {
+                                wrapLine(g, "photo:: ", Base64.getEncoder().encodeToString(img));
+                            }
+                        }
+                    }
                 }
 
                 String userName = userNames.get(userId);
@@ -246,4 +328,15 @@ public class Db2Ldif {
         }
     }
 
+    /** Generates a ID for the company based on the company name */
+    private String companyId(String companyName) {
+        return companyName.toLowerCase().replace('&', '-').replace(' ', '_');
+    }
+
+    /**
+     * Used internally to read in data from teh companies.json file
+     */
+    public static class Company {
+        public String uid, name, description, logo, country, www;
+    }
 }

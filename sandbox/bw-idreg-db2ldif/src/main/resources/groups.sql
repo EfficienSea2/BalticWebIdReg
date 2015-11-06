@@ -1,5 +1,6 @@
 
 select
+  c.companyId,
   c.companyName,
   u.userId
 from

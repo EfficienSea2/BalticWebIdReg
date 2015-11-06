@@ -4,19 +4,28 @@
 # Starts keycloak and imports the "balticweb" realm
 #
 
-pushd `dirname $0` > /dev/null
-SCRIPTPATH=`pwd`
-echo "Running in folder $SCRIPTPATH"
+DIR=`dirname $0`
+source $DIR/../keycloak-env.sh
+
+REALM_DIR=$KEYCLOAK_CONF_DIR/realm
+REALM_FILE=$REALM_DIR/balticweb-realm.json
+
+# Check if a realm file has been specified
+if [ -f "$1" ]
+then
+   REALM_FILE="$1"
+fi
 
 echo "*************************************************"
-echo "* Starting Keycloak - importing balticweb realm *"
+echo "* Starting Keycloak - importing $REALM_FILE     *"
+echo "* When started, stop it again using Ctrl-C      *"
 echo "*************************************************"
-../../keycloak-1.5.0.Final/bin/standalone.sh \
+$KEYCLOAK_PATH/bin/standalone.sh \
+   -Djboss.socket.binding.port-offset=$KEYCLOAK_PORT_OFFSET \
    -Dkeycloak.migration.action=import \
    -Dkeycloak.migration.provider=singleFile \
-   -Dkeycloak.migration.file=$SCRIPTPATH/balticweb-realm.json \
+   -Dkeycloak.migration.file=$REALM_FILE \
    -Dkeycloak.migration.strategy=OVERWRITE_EXISTING
 
-popd > /dev/null
 
 

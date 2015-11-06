@@ -40,3 +40,9 @@ changetype: modify
 add: objectclasses
 objectclasses: ( 1.3.6.1.4.1.11090.1.2.4 NAME 'maritimeService' DESC 'Maritime service' SUP 'top' STRUCTURAL MAY ( cn $ description ) )
 -
+
+dn: cn=schema
+changetype: modify
+add: objectclasses
+objectclasses: ( 1.3.6.1.4.1.11090.1.2.5 NAME 'maritimeOrganization' DESC 'Named maritime organization' SUP 'top' AUXILIARY MAY ( uid $ c $ co $ labeledURI $ mail $ photo $ cn ) )
+-

@@ -97,6 +97,15 @@
       } ],
       "security-admin-console" : [ ],
       "bw-idreg-test" : [ ],
+      "bw-servicereg-test" : [ {
+        "id" : "6f4fc05b-253a-4446-8737-8a53d5aa5dd6",
+        "name" : "user",
+        "composite" : false
+      }, {
+        "id" : "7390b627-08ce-468a-8eb2-cf6cb7e84314",
+        "name" : "admin",
+        "composite" : false
+      } ],
       "broker" : [ {
         "id" : "30963907-1e5e-4e3a-9223-33ecc3f19a40",
         "name" : "read-token",
@@ -123,7 +132,7 @@
   "otpPolicyDigits" : 6,
   "otpPolicyLookAheadWindow" : 1,
   "otpPolicyPeriod" : 30,
-  "users" : [ ],
+  "users" : [],
   "clientScopeMappings" : {
     "realm-management" : [ {
       "client" : "security-admin-console",
@@ -443,6 +452,120 @@
       }
     } ]
   }, {
+    "id" : "f6669f50-95cd-4ab9-aa53-0c76fd42c45d",
+    "clientId" : "bw-servicereg-test",
+    "name" : "BalticWeb Service Registry",
+    "baseUrl" : "http://localhost:8080",
+    "surrogateAuthRequired" : false,
+    "enabled" : true,
+    "clientAuthenticatorType" : "client-secret",
+    "secret" : "07eb74f2-4c36-431e-becd-43c9aaed91a5",
+    "defaultRoles" : [ "user" ],
+    "redirectUris" : [ "http://localhost:8080", "http://localhost:8080/rest/auth/oidc-callback" ],
+    "webOrigins" : [ "http://localhost:8080" ],
+    "notBefore" : 0,
+    "bearerOnly" : false,
+    "consentRequired" : false,
+    "serviceAccountsEnabled" : false,
+    "directGrantsOnly" : false,
+    "publicClient" : false,
+    "frontchannelLogout" : false,
+    "protocol" : "openid-connect",
+    "attributes" : {
+      "saml.assertion.signature" : "false",
+      "saml.force.post.binding" : "false",
+      "saml.multivalued.roles" : "false",
+      "saml.signature.algorithm" : "RSA_SHA256",
+      "saml.encrypt" : "false",
+      "saml_force_name_id_format" : "false",
+      "saml.client.signature" : "false",
+      "saml.authnstatement" : "true",
+      "saml_name_id_format" : "username",
+      "saml.server.signature" : "false",
+      "saml_signature_canonicalization_method" : "http://www.w3.org/2001/10/xml-exc-c14n#"
+    },
+    "fullScopeAllowed" : true,
+    "nodeReRegistrationTimeout" : -1,
+    "protocolMappers" : [ {
+      "id" : "83325d87-7383-4fa7-b2c6-15cf0c47acf7",
+      "name" : "role list",
+      "protocol" : "saml",
+      "protocolMapper" : "saml-role-list-mapper",
+      "consentRequired" : false,
+      "config" : {
+        "single" : "false",
+        "attribute.nameformat" : "Basic",
+        "attribute.name" : "Role"
+      }
+    }, {
+      "id" : "494544d8-97ce-4205-b52d-70a0d7895f0b",
+      "name" : "family name",
+      "protocol" : "openid-connect",
+      "protocolMapper" : "oidc-usermodel-property-mapper",
+      "consentRequired" : true,
+      "consentText" : "${familyName}",
+      "config" : {
+        "user.attribute" : "lastName",
+        "id.token.claim" : "true",
+        "access.token.claim" : "true",
+        "claim.name" : "family_name",
+        "Claim JSON Type" : "String"
+      }
+    }, {
+      "id" : "a944a17b-149c-41dd-8a81-689c6700da0f",
+      "name" : "full name",
+      "protocol" : "openid-connect",
+      "protocolMapper" : "oidc-full-name-mapper",
+      "consentRequired" : true,
+      "consentText" : "${fullName}",
+      "config" : {
+        "id.token.claim" : "true",
+        "access.token.claim" : "true"
+      }
+    }, {
+      "id" : "892383c4-1313-423a-b437-08041c706652",
+      "name" : "given name",
+      "protocol" : "openid-connect",
+      "protocolMapper" : "oidc-usermodel-property-mapper",
+      "consentRequired" : true,
+      "consentText" : "${givenName}",
+      "config" : {
+        "user.attribute" : "firstName",
+        "id.token.claim" : "true",
+        "access.token.claim" : "true",
+        "claim.name" : "given_name",
+        "Claim JSON Type" : "String"
+      }
+    }, {
+      "id" : "39f8a9dc-69f4-4d7c-815a-d44992df8989",
+      "name" : "email",
+      "protocol" : "openid-connect",
+      "protocolMapper" : "oidc-usermodel-property-mapper",
+      "consentRequired" : true,
+      "consentText" : "${email}",
+      "config" : {
+        "user.attribute" : "email",
+        "id.token.claim" : "true",
+        "access.token.claim" : "true",
+        "claim.name" : "email",
+        "Claim JSON Type" : "String"
+      }
+    }, {
+      "id" : "50697c03-a2c3-4b75-9636-0172624177d5",
+      "name" : "username",
+      "protocol" : "openid-connect",
+      "protocolMapper" : "oidc-usermodel-property-mapper",
+      "consentRequired" : true,
+      "consentText" : "${username}",
+      "config" : {
+        "user.attribute" : "username",
+        "id.token.claim" : "true",
+        "access.token.claim" : "true",
+        "claim.name" : "preferred_username",
+        "Claim JSON Type" : "String"
+      }
+    } ]
+  }, {
     "id" : "ab072671-5011-4134-834c-412420b43164",
     "clientId" : "broker",
     "name" : "${client_broker}",
@@ -680,31 +803,16 @@
     "lastSync" : 1443442762
   } ],
   "userFederationMappers" : [ {
-    "id" : "6fba2a77-2d7e-4c09-ba73-302f658ef43e",
-    "name" : "username",
+    "id" : "007f998c-119a-4216-9e60-8f52feb13e56",
+    "name" : "Full Name",
     "federationProviderDisplayName" : "balticweb-ldap",
-    "federationMapperType" : "user-attribute-ldap-mapper",
+    "federationMapperType" : "full-name-ldap-mapper",
     "config" : {
-      "always.read.value.from.ldap" : "false",
-      "read.only" : "false",
-      "ldap.attribute" : "uid",
-      "is.mandatory.in.ldap" : "true",
-      "user.model.attribute" : "username"
+      "ldap.full.name.attribute" : "cn",
+      "read.only" : "false"
     }
   }, {
-    "id" : "8038189f-4ed7-4263-ac13-0e25973683b6",
-    "name" : "modify date",
-    "federationProviderDisplayName" : "balticweb-ldap",
-    "federationMapperType" : "user-attribute-ldap-mapper",
-    "config" : {
-      "always.read.value.from.ldap" : "true",
-      "read.only" : "true",
-      "ldap.attribute" : "modifyTimestamp",
-      "is.mandatory.in.ldap" : "false",
-      "user.model.attribute" : "modifyTimestamp"
-    }
-  }, {
-    "id" : "523903a2-8d77-41ff-9fa6-5233da956192",
+    "id" : "4ffcec86-9c3b-4022-9f07-89577c86460f",
     "name" : "first name",
     "federationProviderDisplayName" : "balticweb-ldap",
     "federationMapperType" : "user-attribute-ldap-mapper",
@@ -716,28 +824,7 @@
       "user.model.attribute" : "firstName"
     }
   }, {
-    "id" : "6d1913d1-57de-40f5-99f0-79eb21617764",
-    "name" : "Full Name",
-    "federationProviderDisplayName" : "balticweb-ldap",
-    "federationMapperType" : "full-name-ldap-mapper",
-    "config" : {
-      "ldap.full.name.attribute" : "cn",
-      "read.only" : "false"
-    }
-  }, {
-    "id" : "8259343d-a2ab-45fe-881c-7601419db22f",
-    "name" : "creation date",
-    "federationProviderDisplayName" : "balticweb-ldap",
-    "federationMapperType" : "user-attribute-ldap-mapper",
-    "config" : {
-      "always.read.value.from.ldap" : "true",
-      "read.only" : "true",
-      "ldap.attribute" : "createTimestamp",
-      "is.mandatory.in.ldap" : "false",
-      "user.model.attribute" : "createTimestamp"
-    }
-  }, {
-    "id" : "e3659bda-e67a-4b68-ade5-36875db933b5",
+    "id" : "5451bad2-cb25-475d-8c14-738bf128eab6",
     "name" : "last name",
     "federationProviderDisplayName" : "balticweb-ldap",
     "federationMapperType" : "user-attribute-ldap-mapper",
@@ -749,7 +836,45 @@
       "user.model.attribute" : "lastName"
     }
   }, {
-    "id" : "db7a3dc9-9514-460d-a766-b8f85cb13906",
+    "id" : "dfde67f4-b3c7-406a-bf97-400ac0d30156",
+    "name" : "modify date",
+    "federationProviderDisplayName" : "balticweb-ldap",
+    "federationMapperType" : "user-attribute-ldap-mapper",
+    "config" : {
+      "always.read.value.from.ldap" : "true",
+      "read.only" : "true",
+      "ldap.attribute" : "modifyTimestamp",
+      "is.mandatory.in.ldap" : "false",
+      "user.model.attribute" : "modifyTimestamp"
+    }
+  }, {
+    "id" : "22dfd821-0b3a-4169-a089-a5761a9d7829",
+    "name" : "username",
+    "federationProviderDisplayName" : "balticweb-ldap",
+    "federationMapperType" : "user-attribute-ldap-mapper",
+    "config" : {
+      "always.read.value.from.ldap" : "false",
+      "read.only" : "false",
+      "ldap.attribute" : "uid",
+      "is.mandatory.in.ldap" : "true",
+      "user.model.attribute" : "username"
+    }
+  }, {
+    "id" : "d6d3ee02-2dab-4417-bf80-2332179fbec2",
+    "name" : "bw-servicereg-test",
+    "federationProviderDisplayName" : "balticweb-ldap",
+    "federationMapperType" : "role-ldap-mapper",
+    "config" : {
+      "mode" : "LDAP_ONLY",
+      "roles.dn" : "cn=bw-servicereg-test,ou=services,dc=balticweb,dc=net",
+      "membership.ldap.attribute" : "roleOccupant",
+      "role.name.ldap.attribute" : "cn",
+      "use.realm.roles.mapping" : "false",
+      "client.id" : "bw-servicereg-test",
+      "role.object.classes" : "organizationalRole"
+    }
+  }, {
+    "id" : "7ec955b6-3675-412a-a64a-031aba215908",
     "name" : "email",
     "federationProviderDisplayName" : "balticweb-ldap",
     "federationMapperType" : "user-attribute-ldap-mapper",
@@ -759,6 +884,18 @@
       "ldap.attribute" : "mail",
       "is.mandatory.in.ldap" : "true",
       "user.model.attribute" : "email"
+    }
+  }, {
+    "id" : "e026f3d0-9cc3-4fb7-9c4e-c01545cf12a2",
+    "name" : "creation date",
+    "federationProviderDisplayName" : "balticweb-ldap",
+    "federationMapperType" : "user-attribute-ldap-mapper",
+    "config" : {
+      "always.read.value.from.ldap" : "true",
+      "read.only" : "true",
+      "ldap.attribute" : "createTimestamp",
+      "is.mandatory.in.ldap" : "false",
+      "user.model.attribute" : "createTimestamp"
     }
   } ],
   "loginTheme" : "balticweb",
@@ -771,35 +908,23 @@
   "internationalizationEnabled" : false,
   "supportedLocales" : [ "" ],
   "authenticationFlows" : [ {
-    "alias" : "reset credentials",
-    "description" : "Reset credentials for a user if they forgot their password or something",
+    "alias" : "forms",
+    "description" : "Username, password, otp and other auth forms.",
     "providerId" : "basic-flow",
-    "topLevel" : true,
+    "topLevel" : false,
     "builtIn" : true,
     "authenticationExecutions" : [ {
-      "authenticator" : "reset-credentials-choose-user",
+      "authenticator" : "auth-username-password-form",
       "autheticatorFlow" : false,
       "requirement" : "REQUIRED",
       "userSetupAllowed" : false,
       "priority" : 10
     }, {
-      "authenticator" : "reset-credential-email",
-      "autheticatorFlow" : false,
-      "requirement" : "REQUIRED",
-      "userSetupAllowed" : false,
-      "priority" : 20
-    }, {
-      "authenticator" : "reset-password",
-      "autheticatorFlow" : false,
-      "requirement" : "REQUIRED",
-      "userSetupAllowed" : false,
-      "priority" : 30
-    }, {
-      "authenticator" : "reset-otp",
+      "authenticator" : "auth-otp-form",
       "autheticatorFlow" : false,
       "requirement" : "OPTIONAL",
       "userSetupAllowed" : false,
-      "priority" : 40
+      "priority" : 20
     } ]
   }, {
     "alias" : "browser",
@@ -872,21 +997,21 @@
       "priority" : 10
     } ]
   }, {
-    "alias" : "forms",
-    "description" : "Username, password, otp and other auth forms.",
-    "providerId" : "basic-flow",
-    "topLevel" : false,
+    "alias" : "clients",
+    "description" : "Base authentication for clients",
+    "providerId" : "client-flow",
+    "topLevel" : true,
     "builtIn" : true,
     "authenticationExecutions" : [ {
-      "authenticator" : "auth-username-password-form",
+      "authenticator" : "client-secret",
       "autheticatorFlow" : false,
-      "requirement" : "REQUIRED",
+      "requirement" : "ALTERNATIVE",
       "userSetupAllowed" : false,
       "priority" : 10
     }, {
-      "authenticator" : "auth-otp-form",
+      "authenticator" : "client-jwt",
       "autheticatorFlow" : false,
-      "requirement" : "OPTIONAL",
+      "requirement" : "ALTERNATIVE",
       "userSetupAllowed" : false,
       "priority" : 20
     } ]
@@ -916,27 +1041,53 @@
       "priority" : 30
     } ]
   }, {
-    "alias" : "clients",
-    "description" : "Base authentication for clients",
-    "providerId" : "client-flow",
+    "alias" : "reset credentials",
+    "description" : "Reset credentials for a user if they forgot their password or something",
+    "providerId" : "basic-flow",
     "topLevel" : true,
     "builtIn" : true,
     "authenticationExecutions" : [ {
-      "authenticator" : "client-secret",
+      "authenticator" : "reset-credentials-choose-user",
       "autheticatorFlow" : false,
-      "requirement" : "ALTERNATIVE",
+      "requirement" : "REQUIRED",
       "userSetupAllowed" : false,
       "priority" : 10
     }, {
-      "authenticator" : "client-jwt",
+      "authenticator" : "reset-credential-email",
       "autheticatorFlow" : false,
-      "requirement" : "ALTERNATIVE",
+      "requirement" : "REQUIRED",
       "userSetupAllowed" : false,
       "priority" : 20
+    }, {
+      "authenticator" : "reset-password",
+      "autheticatorFlow" : false,
+      "requirement" : "REQUIRED",
+      "userSetupAllowed" : false,
+      "priority" : 30
+    }, {
+      "authenticator" : "reset-otp",
+      "autheticatorFlow" : false,
+      "requirement" : "OPTIONAL",
+      "userSetupAllowed" : false,
+      "priority" : 40
     } ]
   } ],
   "authenticatorConfig" : [ ],
   "requiredActions" : [ {
+    "alias" : "terms_and_conditions",
+    "name" : "Terms and Conditions",
+    "providerId" : "terms_and_conditions",
+    "enabled" : false,
+    "defaultAction" : false,
+    "config" : { }
+  }, {
+    "alias" : "CONFIGURE_TOTP",
+    "name" : "Configure Totp",
+    "providerId" : "CONFIGURE_TOTP",
+    "enabled" : true,
+    "defaultAction" : false,
+    "config" : { }
+  }, {
     "alias" : "UPDATE_PASSWORD",
     "name" : "Update Password",
     "providerId" : "UPDATE_PASSWORD",
@@ -954,20 +1105,6 @@
     "alias" : "UPDATE_PROFILE",
     "name" : "Update Profile",
     "providerId" : "UPDATE_PROFILE",
-    "enabled" : true,
-    "defaultAction" : false,
-    "config" : { }
-  }, {
-    "alias" : "terms_and_conditions",
-    "name" : "Terms and Conditions",
-    "providerId" : "terms_and_conditions",
-    "enabled" : false,
-    "defaultAction" : false,
-    "config" : { }
-  }, {
-    "alias" : "CONFIGURE_TOTP",
-    "name" : "Configure Totp",
-    "providerId" : "CONFIGURE_TOTP",
     "enabled" : true,
     "defaultAction" : false,
     "config" : { }

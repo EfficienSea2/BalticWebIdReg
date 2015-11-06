@@ -32,7 +32,7 @@ objectClass: maritimeResource
 mrn: urn:mrn:dma:user:ged
 uid: ged
 cn: Ged Gedson
-givenName: ged
+givenName: Ged
 sn: Gedson
 mail: ged@gedson.ged
 userpassword: ged
@@ -57,15 +57,15 @@ mmsi: 219622000
 imo: 9150030
 member: uid=ged,ou=people,dc=balticweb,dc=net
 
-dn: cn=idreg-test,ou=services,dc=balticweb,dc=net
+dn: cn=bw-servicereg-test,ou=services,dc=balticweb,dc=net
 objectclass: top
 objectClass: maritimeResource
 objectClass: maritimeService
-cn: idreg-test
+cn: bw-servicereg-test
 mrn: urn:mrn:dma:service:idreg-test
 
-dn: cn=admin,cn=idreg-test,ou=services,dc=balticweb,dc=net
+dn: cn=admin,cn=bw-servicereg-test,ou=services,dc=balticweb,dc=net
 objectclass: top
-objectclass: groupOfNames
+objectclass: organizationalRole
 cn: admin
-member: uid=ged,ou=people,dc=balticweb,dc=net
+roleOccupant: uid=ged,ou=people,dc=balticweb,dc=net

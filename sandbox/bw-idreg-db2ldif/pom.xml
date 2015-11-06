@@ -16,6 +16,10 @@
     <name>BalticWeb User DB-to-LDIF Utility</name>
     <description>Converts a Teamwork.com user DB to an LDIF file that can be imported in LDAP</description>
 
+    <properties>
+        <jackson.version>2.3.2</jackson.version>
+    </properties>
+
     <dependencies>
 
         <dependency>
@@ -34,6 +38,23 @@
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
             <version>5.1.30</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-core</artifactId>
+            <version>${jackson.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>${jackson.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>2.4</version>
         </dependency>
 
     </dependencies>
