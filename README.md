@@ -19,10 +19,8 @@ The ID Registry project is comprised of the following sub-projects:
 
 ## Start LDAP
 
-    java -jar bw-idreg-ldap/target/bw-idreg-ldap-0.1-SNAPSHOT.jar \ 
-        ldapserver \
-        -dir /tmp/ldap
-
+    ./run-ldap-server.sh
+    
 ## Create keycloak DB
 
     mysql -u root -p < bw-idreg-authsvr/create-database.sql
@@ -37,7 +35,7 @@ The ID Registry project is comprised of the following sub-projects:
     ./bw-idreg-authsvr/realm/import.sh
     
     # Subsequently, start Keycloak normally
-    ./keycloak-1.5.0.Final/bin/standalone.sh
+    ./run-keycloak.sh
 
 ## Using LDAPS
   

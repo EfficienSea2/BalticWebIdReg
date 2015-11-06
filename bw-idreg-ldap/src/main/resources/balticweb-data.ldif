@@ -29,6 +29,7 @@ objectclass: top
 objectclass: organizationalPerson
 objectclass: inetOrgPerson
 objectClass: maritimeResource
+entryuuid: 00000000-0001-4444-0000-000000000000
 mrn: urn:mrn:dma:user:ged
 uid: ged
 cn: Ged Gedson
