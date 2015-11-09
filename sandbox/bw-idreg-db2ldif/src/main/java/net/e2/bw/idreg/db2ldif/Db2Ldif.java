@@ -297,7 +297,7 @@ public class Db2Ldif {
             groups.values().stream()
                     .forEach(g -> ldif.append(g).append(NL));
 
-            System.out.println(String.format("Fetched %d groups in %d ms", index, System.currentTimeMillis() - t0));
+            System.out.println(String.format("Fetched %d groups in %d ms", groups.size(), System.currentTimeMillis() - t0));
 
         } catch(Exception ex) {
             ex.printStackTrace();

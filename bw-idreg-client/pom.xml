@@ -7,6 +7,7 @@
     <groupId>net.e2.bw.idreg</groupId>
     <artifactId>bw-idreg-parent</artifactId>
     <version>0.1-SNAPSHOT</version>
+    <relativePath>../pom.xml</relativePath>
   </parent>
 
   <artifactId>bw-idreg-client</artifactId>
