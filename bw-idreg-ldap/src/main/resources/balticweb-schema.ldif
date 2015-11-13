@@ -25,6 +25,36 @@ attributetypes: ( 1.3.6.1.4.1.11090.1.1.4 NAME 'mrn' DESC 'Maritime Resource Nam
 
 dn: cn=schema
 changetype: modify
+add: attributeTypes
+attributetypes: ( 1.3.6.1.4.1.11090.1.1.5 NAME 'serviceOrganization' DESC 'DN of service organization' EQUALITY distinguishedNameMatch SINGLE-VALUE SYNTAX 1.3.6.1.4.1.1466.115.121.1.12 )
+-
+
+dn: cn=schema
+changetype: modify
+add: attributeTypes
+attributetypes: ( 1.3.6.1.4.1.11090.1.1.6 NAME 'serviceType' DESC 'Service type' EQUALITY 'caseIgnoreMatch' SUBSTR caseIgnoreSubstringsMatch SINGLE-VALUE SYNTAX '1.3.6.1.4.1.1466.115.121.1.15{32}' )
+-
+
+dn: cn=schema
+changetype: modify
+add: attributeTypes
+attributetypes: ( 1.3.6.1.4.1.11090.1.1.7 NAME 'serviceSpecification' DESC 'DN of service specification' EQUALITY distinguishedNameMatch SINGLE-VALUE SYNTAX 1.3.6.1.4.1.1466.115.121.1.12 )
+-
+
+dn: cn=schema
+changetype: modify
+add: attributeTypes
+attributetypes: ( 1.3.6.1.4.1.11090.1.1.8 NAME 'serviceCoverage' DESC 'Service coverage area' EQUALITY octetStringMatch SYNTAX '1.3.6.1.4.1.1466.115.121.1.40' )
+-
+
+dn: cn=schema
+changetype: modify
+add: attributeTypes
+attributetypes: ( 1.3.6.1.4.1.11090.1.1.9 NAME 'serviceEndpoint' DESC 'Service endpoint' EQUALITY 'caseIgnoreMatch' SUBSTR caseIgnoreSubstringsMatch SYNTAX '1.3.6.1.4.1.1466.115.121.1.15{256}' )
+-
+
+dn: cn=schema
+changetype: modify
 add: objectclasses
 objectclasses: ( 1.3.6.1.4.1.11090.1.2.1 NAME 'vessel' DESC 'Common attributes vessels' SUP 'top' AUXILIARY MAY ( cn $ description $ callSign $ mmsi $ imo ) )
 -
@@ -38,11 +68,17 @@ objectclasses: ( 1.3.6.1.4.1.11090.1.2.3 NAME 'maritimeResource' DESC 'Named mar
 dn: cn=schema
 changetype: modify
 add: objectclasses
-objectclasses: ( 1.3.6.1.4.1.11090.1.2.4 NAME 'maritimeService' DESC 'Maritime service' SUP 'top' STRUCTURAL MAY ( cn $ description ) )
+objectclasses: ( 1.3.6.1.4.1.11090.1.2.4 NAME 'maritimeServiceSpec' DESC 'Maritime service specification' SUP 'top' STRUCTURAL MUST (uid $ cn $ serviceOrganization $ serviceType) MAY ( description ) )
 -
 
 dn: cn=schema
 changetype: modify
 add: objectclasses
-objectclasses: ( 1.3.6.1.4.1.11090.1.2.5 NAME 'maritimeOrganization' DESC 'Named maritime organization' SUP 'top' AUXILIARY MAY ( uid $ c $ co $ labeledURI $ mail $ photo $ cn ) )
+objectclasses: ( 1.3.6.1.4.1.11090.1.2.5 NAME 'maritimeService' DESC 'Maritime service' SUP 'top' STRUCTURAL MUST (uid $ cn $ serviceOrganization $ serviceSpecification) MAY ( description $ serviceCoverage $ serviceEndpoint ) )
+-
+
+dn: cn=schema
+changetype: modify
+add: objectclasses
+objectclasses: ( 1.3.6.1.4.1.11090.1.2.6 NAME 'maritimeOrganization' DESC 'Named maritime organization' SUP 'top' AUXILIARY MAY ( uid $ c $ co $ labeledURI $ mail $ photo $ cn ) )
 -

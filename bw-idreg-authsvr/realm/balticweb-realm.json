@@ -866,7 +866,7 @@
     "federationMapperType" : "role-ldap-mapper",
     "config" : {
       "mode" : "LDAP_ONLY",
-      "roles.dn" : "cn=bw-servicereg-test,ou=services,dc=balticweb,dc=net",
+      "roles.dn" : "uid=dma-imo-mcservicereg-www-1,ou=services,dc=balticweb,dc=net",
       "membership.ldap.attribute" : "roleOccupant",
       "role.name.ldap.attribute" : "cn",
       "use.realm.roles.mapping" : "false",

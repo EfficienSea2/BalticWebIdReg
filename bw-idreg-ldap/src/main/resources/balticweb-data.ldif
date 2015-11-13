@@ -17,7 +17,12 @@ ou: groups
 dn: ou=services,dc=balticweb,dc=net
 objectclass: top
 objectclass: organizationalUnit
-ou: MMS Services
+ou: services
+
+dn: ou=service-specs,dc=balticweb,dc=net
+objectclass: top
+objectclass: organizationalUnit
+ou: service-specifications
 
 dn: ou=vessels,dc=balticweb,dc=net
 objectclass: top
@@ -58,14 +63,23 @@ mmsi: 219622000
 imo: 9150030
 member: uid=ged,ou=people,dc=balticweb,dc=net
 
-dn: cn=bw-servicereg-test,ou=services,dc=balticweb,dc=net
+dn: uid=imo-mcservicereg-www,ou=service-specs,dc=balticweb,dc=net
 objectclass: top
-objectClass: maritimeResource
+objectClass: maritimeServiceSpec
+cn: MC Service Registry (www)
+uid: imo-mcservicereg-www
+serviceOrganization: cn=dma,ou=groups,dc=balticweb,dc=net
+serviceType: WWW
+
+dn: uid=dma-imo-mcservicereg-www-1,ou=services,dc=balticweb,dc=net
+objectclass: top
 objectClass: maritimeService
 cn: bw-servicereg-test
-mrn: urn:mrn:dma:service:idreg-test
+uid: dma-imo-mcservicereg-www-1
+serviceOrganization: cn=dma,ou=groups,dc=balticweb,dc=net
+serviceSpecification: uid=imo-mcservicereg-www,ou=service-specs,dc=balticweb,dc=net
 
-dn: cn=admin,cn=bw-servicereg-test,ou=services,dc=balticweb,dc=net
+dn: cn=admin,uid=dma-imo-mcservicereg-www-1,ou=services,dc=balticweb,dc=net
 objectclass: top
 objectclass: organizationalRole
 cn: admin
